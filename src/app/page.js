@@ -7,7 +7,10 @@ export default function Home() {
   const [step, setStep] = useState(1);
   const [status, setStatus] = useState(null);
   const [formData, setFormData] = useState({
-    Applicant_Name: '', Applicant_Sex: '', Date_of_Birth: '', Nationality: '', Email_Address: '',
+    Applicant_Name: '',
+    Applicant_Sex: '',
+    Date_of_Birth: '',
+    Email_Address: ''
   });
 
   const handleInputChange = (e) => {
@@ -34,7 +37,8 @@ export default function Home() {
 
     const submissionData = new FormData(e.currentTarget);
     submissionData.append("access_key", "e4d88a8c-2205-425b-b40b-c19adf7cfad1");
-    submissionData.append("subject", `New Application: ${formData.Applicant_Name || 'New Student'}`);
+    // Dynamically set subject using the Name field
+    submissionData.append("subject", `New EL-OLAM Application: ${formData.Applicant_Name || 'New Student'}`);
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -108,8 +112,8 @@ export default function Home() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-1">
-                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">1. Full Name</label>
-                      <input className={inputStyle} placeholder="ENTER FULL LEGAL NAME" name="Applicant_Name" required onChange={handleInputChange} />
+                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">1. Name</label>
+                      <input className={inputStyle} placeholder="FULL NAME" name="Applicant_Name" required onChange={handleInputChange} />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[12px] font-black text-blue-900 uppercase ml-1">2. Sex</label>
@@ -124,24 +128,28 @@ export default function Home() {
                       <input type="date" className={inputStyle} name="Date_of_Birth" required onChange={handleInputChange} />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">4. Nationality</label>
-                      <input className={inputStyle} placeholder="ENTER NATIONALITY" name="Nationality" required />
+                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">4. Place of Birth</label>
+                      <input className={inputStyle} placeholder="CITY/TOWN" name="Place_of_Birth" required />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">5. State of Origin</label>
-                      <input className={inputStyle} placeholder="ENTER STATE" name="State_of_Origin" required />
+                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">5. Nationality</label>
+                      <input className={inputStyle} placeholder="COUNTRY" name="Nationality" required />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">6. LGA</label>
-                      <input className={inputStyle} placeholder="ENTER LGA" name="LGA" required />
+                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">6. State of Origin</label>
+                      <input className={inputStyle} placeholder="STATE" name="State_of_Origin" required />
                     </div>
-                    <div className="space-y-1 md:col-span-2">
-                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">7. Email Address</label>
-                      <input type="email" className={inputStyle} placeholder="ENTER EMAIL ADDRESS" name="Email_Address" required onChange={handleInputChange} />
+                    <div className="space-y-1">
+                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">7. LGA</label>
+                      <input className={inputStyle} placeholder="LOCAL GOVT AREA" name="LGA" required />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">9. Email Address</label>
+                      <input type="email" className={inputStyle} placeholder="EMAIL" name="Email_Address" required onChange={handleInputChange} />
                     </div>
                     <div className="space-y-1 md:col-span-2">
                       <label className="text-[12px] font-black text-blue-900 uppercase ml-1">8. Home Address</label>
-                      <input className={inputStyle} placeholder="ENTER COMPLETE RESIDENTIAL ADDRESS" name="Home_Address" required />
+                      <input className={inputStyle} placeholder="COMPLETE RESIDENTIAL ADDRESS" name="Home_Address" required />
                     </div>
                   </div>
                 </div>
@@ -157,22 +165,22 @@ export default function Home() {
                       <input className={inputStyle} name="Father_Name" placeholder="FATHER'S FULL NAME" /></div>
                     <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">11. Occupation</label>
                       <input className={inputStyle} name="Father_Occupation" placeholder="FATHER'S OCCUPATION" /></div>
-                    <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">12. Phone No</label>
-                      <input className={inputStyle} name="Father_Phone" placeholder="FATHER'S PHONE NUMBER" /></div>
+                    <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">12. Telephone No</label>
+                      <input className={inputStyle} name="Father_Phone" placeholder="PHONE" /></div>
                     <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">13. Office Address</label>
-                      <input className={inputStyle} name="Father_Office_Address" placeholder="FATHER'S OFFICE ADDRESS" /></div>
+                      <input className={inputStyle} name="Father_Office_Address" placeholder="OFFICE ADDRESS" /></div>
                     <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">14. Mother's Name</label>
                       <input className={inputStyle} name="Mother_Name" placeholder="MOTHER'S FULL NAME" /></div>
                     <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">15. Occupation</label>
                       <input className={inputStyle} name="Mother_Occupation" placeholder="MOTHER'S OCCUPATION" /></div>
-                    <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">16. Phone No</label>
-                      <input className={inputStyle} name="Mother_Phone" placeholder="MOTHER'S PHONE NUMBER" /></div>
+                    <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">16. Telephone No</label>
+                      <input className={inputStyle} name="Mother_Phone" placeholder="PHONE" /></div>
                     <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">17. Office Address</label>
-                      <input className={inputStyle} name="Mother_Office_Address" placeholder="MOTHER'S OFFICE ADDRESS" /></div>
+                      <input className={inputStyle} name="Mother_Office_Address" placeholder="OFFICE ADDRESS" /></div>
                     <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">18. Religion</label>
                       <input className={inputStyle} name="Religion" placeholder="RELIGION" /></div>
-                    <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">19. Fee Payer</label>
-                      <input className={inputStyle} name="Fee_Payer_Name" placeholder="WHO PAYS CHILD'S FEES?" /></div>
+                    <div className="space-y-1"><label className="text-[12px] font-black text-blue-900 uppercase ml-1">19. Who pays child's fees?</label>
+                      <input className={inputStyle} name="Fee_Payer_Name" placeholder="PAYER NAME" /></div>
                   </div>
                 </div>
             )}
@@ -184,35 +192,43 @@ export default function Home() {
                   </div>
                   <div className="space-y-6">
                     <div className="flex flex-col sm:flex-row gap-6 p-6 bg-blue-50 rounded-xl border-2 border-blue-200">
-                      <label className={selectionLabelStyle}>
-                        <input type="radio" name="Disability_Origin" value="Acquired" className={radioCheckStyle} />
-                        DISABILITY ACQUIRED
-                      </label>
-                      <label className={selectionLabelStyle}>
-                        <input type="radio" name="Disability_Origin" value="At Birth" className={radioCheckStyle} />
-                        DISABILITY AT BIRTH
-                      </label>
+                      <label className={selectionLabelStyle}><input type="radio" name="Disability_Status" value="Acquired" className={radioCheckStyle} /> DISABILITY ACQUIRED</label>
+                      <label className={selectionLabelStyle}><input type="radio" name="Disability_Status" value="At Birth" className={radioCheckStyle} /> DISABILITY AT BIRTH</label>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-2 border-slate-200 p-6 rounded-xl bg-slate-50">
                       <p className="col-span-full text-xs font-black uppercase text-blue-700 mb-2 border-b border-blue-100 pb-2">Nature of Disability</p>
-                      <label className={selectionLabelStyle}><input type="checkbox" name="Hearing_Impaired" value="Yes" className={radioCheckStyle} /> HEARING IMPAIRED</label>
-                      <label className={selectionLabelStyle}><input type="checkbox" name="Visually_Impaired" value="Yes" className={radioCheckStyle} /> VISUALLY IMPAIRED</label>
-                      <label className={selectionLabelStyle}><input type="checkbox" name="Physically_Challenged" value="Yes" className={radioCheckStyle} /> PHYSICALLY CHALLENGED</label>
-                      <label className={selectionLabelStyle}><input type="checkbox" name="Multiple_Challenged" value="Yes" className={radioCheckStyle} /> MULTIPLE CHALLENGED</label>
+                      <label className={selectionLabelStyle}><input type="checkbox" name="Nature_Hearing" value="Yes" className={radioCheckStyle} /> HEARING IMPAIRED</label>
+                      <label className={selectionLabelStyle}><input type="checkbox" name="Nature_Visual" value="Yes" className={radioCheckStyle} /> VISUALLY IMPAIRED</label>
+                      <label className={selectionLabelStyle}><input type="checkbox" name="Nature_Physical" value="Yes" className={radioCheckStyle} /> PHYSICALLY CHALLENGED</label>
+                      <label className={selectionLabelStyle}><input type="checkbox" name="Nature_Multiple" value="Yes" className={radioCheckStyle} /> MULTIPLE CHALLENGED</label>
+                      <div className="col-span-full mt-2">
+                        <input className={inputStyle} name="Nature_Other_Specify" placeholder="OTHER (PLEASE SPECIFY)" />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-2 border-slate-200 p-6 rounded-xl bg-white shadow-sm">
+                      <p className="col-span-full text-xs font-black uppercase text-blue-700 mb-2 border-b border-blue-100 pb-2">Observations (Experiences)</p>
+                      <label className={selectionLabelStyle}><input type="checkbox" name="Exp_Restlessness" value="Yes" className={radioCheckStyle} /> RESTLESSNESS</label>
+                      <label className={selectionLabelStyle}><input type="checkbox" name="Exp_Sleeplessness" value="Yes" className={radioCheckStyle} /> SLEEPLESSNESS</label>
+                      <label className={selectionLabelStyle}><input type="checkbox" name="Exp_Convulsion" value="Yes" className={radioCheckStyle} /> CONVULSION AT INTERVALS</label>
+                      <label className={selectionLabelStyle}><input type="checkbox" name="Exp_Lack_Concentration" value="Yes" className={radioCheckStyle} /> LACK OF CONCENTRATION</label>
                     </div>
 
                     <div className="space-y-1">
                       <label className="text-[12px] font-black text-blue-900 uppercase ml-1">Health Institution Visited</label>
-                      <input className={inputStyle} name="Health_Institution" placeholder="ENTER CLINIC/HOSPITAL NAME" />
+                      <input className={inputStyle} name="Health_Institution_Visited" placeholder="CLINIC/HOSPITAL NAME" />
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 border-2 border-blue-200 rounded-xl bg-white shadow-sm gap-4">
-                      <span className="text-sm font-black text-slate-800 uppercase tracking-tight">Is child on special medication?</span>
-                      <div className="flex gap-8">
-                        <label className={selectionLabelStyle}><input type="radio" name="Special_Medication" value="Yes" className={radioCheckStyle} /> YES</label>
-                        <label className={selectionLabelStyle}><input type="radio" name="Special_Medication" value="No" className={radioCheckStyle} /> NO</label>
+                    <div className="space-y-4">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 border-2 border-blue-200 rounded-xl bg-white shadow-sm gap-4">
+                        <span className="text-sm font-black text-slate-800 uppercase tracking-tight">Is child on special medication?</span>
+                        <div className="flex gap-8">
+                          <label className={selectionLabelStyle}><input type="radio" name="Special_Medication" value="Yes" className={radioCheckStyle} /> YES</label>
+                          <label className={selectionLabelStyle}><input type="radio" name="Special_Medication" value="No" className={radioCheckStyle} /> NO</label>
+                        </div>
                       </div>
+                      <textarea className={`${inputStyle} h-24 resize-none`} name="Medication_Details" placeholder="IF YES, LIST MEDICATIONS TO BE ADMINISTERED"></textarea>
                     </div>
                   </div>
                 </div>
@@ -224,6 +240,10 @@ export default function Home() {
                     <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">4.0 Educational Background</h2>
                   </div>
                   <div className="space-y-6">
+                    <div className="space-y-1">
+                      <label className="text-[12px] font-black text-blue-900 uppercase ml-1">Previous School/Center Attended</label>
+                      <input className={inputStyle} name="Previous_School" placeholder="ENTER SCHOOL NAME" />
+                    </div>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 border-2 border-blue-200 rounded-xl bg-white shadow-sm gap-4">
                       <span className="text-sm font-black text-slate-800 uppercase tracking-tight">He/She can read and write?</span>
                       <div className="flex gap-8">
@@ -246,30 +266,11 @@ export default function Home() {
             )}
 
             <div className="flex items-center justify-between mt-12 mb-8 gap-6">
-              <button
-                  type="button"
-                  onClick={prevStep}
-                  disabled={step === 1}
-                  className={`flex-1 h-16 flex items-center justify-center rounded-2xl font-black border-4 
-                ${step === 1 ? 'opacity-0 invisible' : 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white uppercase tracking-widest'}`}
-              >
-                ← BACK
-              </button>
-
+              <button type="button" onClick={prevStep} disabled={step === 1} className={`flex-1 h-16 flex items-center justify-center rounded-2xl font-black border-4 ${step === 1 ? 'opacity-0 invisible' : 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white uppercase tracking-widest'}`}>← BACK</button>
               {step < 4 ? (
-                  <button
-                      type="button"
-                      onClick={nextStep}
-                      className="flex-1 h-16 flex items-center justify-center rounded-2xl bg-blue-600 text-white font-black hover:bg-blue-700 uppercase tracking-widest border-b-4 border-blue-800"
-                  >
-                    NEXT STEP →
-                  </button>
+                  <button type="button" onClick={nextStep} className="flex-1 h-16 flex items-center justify-center rounded-2xl bg-blue-600 text-white font-black hover:bg-blue-700 uppercase tracking-widest border-b-4 border-blue-800">NEXT STEP →</button>
               ) : (
-                  <button
-                      type="submit"
-                      disabled={status === "Sending..."}
-                      className="flex-1 h-16 flex items-center justify-center rounded-2xl bg-green-600 text-white font-black hover:bg-green-700 shadow-xl transition-all active:scale-95 uppercase tracking-widest border-b-4 border-green-800 disabled:opacity-50"
-                  >
+                  <button type="submit" disabled={status === "Sending..."} className="flex-1 h-16 flex items-center justify-center rounded-2xl bg-green-600 text-white font-black hover:bg-green-700 shadow-xl transition-all active:scale-95 uppercase tracking-widest border-b-4 border-green-800 disabled:opacity-50">
                     {status === "Sending..." ? "SENDING..." : "SUBMIT FORM ✓"}
                   </button>
               )}
