@@ -107,8 +107,11 @@ export default function Home() {
     const loadingToast = toast.loading('Submitting application...');
     setStatus("Sending...");
 
+    let web3Success = false;
+    let supabaseSuccess = false;
+
+    // 1. Submit to Web3Forms
     try {
-      // 1. Submit to Web3Forms (Original Form Data)
       const web3Response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -120,10 +123,16 @@ export default function Home() {
       });
 
       const web3Data = await web3Response.json();
+      web3Success = web3Data.success;
+      if (!web3Success) console.error('Web3Forms rejection:', web3Data);
+    } catch (error) {
+      console.error('Web3Forms Submission Error:', error);
+    }
 
-      // 2. Data Transformation for Supabase 'children' table
-      const supabaseData = {
-        // 1.0 Personal Data
+    // 2. Data Transformation for Supabase 'children' table
+    let supabaseData;
+    try {
+      supabaseData = {
         full_name: formData.Applicant_Name,
         sex: formData.Applicant_Sex,
         dob: formData.Date_of_Birth || null,
@@ -133,8 +142,6 @@ export default function Home() {
         lga: formData.LGA,
         email_address: formData.Email_Address,
         home_address: formData.Home_Address,
-
-        // 2.0 Guardian Info
         father_name: formData.Father_Name,
         father_occupation: formData.Father_Occupation,
         father_phone: formData.Father_Phone,
@@ -145,8 +152,6 @@ export default function Home() {
         religious_leader_name: formData.Religious_Leader_Name,
         religious_leader_phone: formData.Religious_Leader_Phone,
         fee_payer_name: formData.Fee_Payer_Name,
-
-        // 3.0 Health & Medical
         disability_timing: formData.Disability_Status,
         disability_nature: [
           formData.Nature_Hearing === 'Yes' && 'Hearing',
@@ -181,36 +186,47 @@ export default function Home() {
           Urine: formData.Med_Urine,
           Stools: formData.Med_Stools
         },
-
-        // 4.0 Education
         previous_school: formData.Previous_School,
         can_read_write: formData.Can_Read_Write === 'Yes',
         reason_for_leaving: formData.Reason_for_Leaving
       };
+    } catch (error) {
+      console.error('Data Mapping Error:', error);
+    }
 
-      // 3. Insert into Supabase
-      const { error: supabaseError } = await supabase
-        .from('children')
-        .insert([supabaseData]);
+    // 3. Submit to Supabase
+    if (supabaseData) {
+      try {
+        const { error: supabaseError } = await supabase
+          .from('children')
+          .insert([supabaseData]);
 
-      if (supabaseError) {
-        console.error('Supabase error:', supabaseError);
-        // We still consider it a success if Web3Forms worked
+        if (supabaseError) {
+          console.error('Supabase Insert Error:', supabaseError);
+        } else {
+          supabaseSuccess = true;
+        }
+      } catch (error) {
+        console.error('Supabase fetch error:', error);
       }
+    }
 
-      if (web3Data.success) {
-        setStatus("Success");
-        toast.success('Application Submitted Successfully!', { id: loadingToast });
+    // 4. Update UI Status
+    if (web3Success || supabaseSuccess) {
+      setStatus("Success");
+      const message = web3Success && supabaseSuccess
+        ? 'Application Submitted Successfully!'
+        : (web3Success ? 'Form sent via Email (Supabase failed)' : 'Data saved to DB (Email failed)');
+
+      toast.success(message, { id: loadingToast });
+
+      if (web3Success && supabaseSuccess) {
         setFormData(INITIAL_FORM_DATA);
         setStep(1);
-      } else {
-        setStatus("Error");
-        toast.error('Submission failed. Please check your details.', { id: loadingToast });
       }
-    } catch (error) {
-      console.error('Submission error:', error);
+    } else {
       setStatus("Error");
-      toast.error('Network error. Please try again later.', { id: loadingToast });
+      toast.error('Submission failed. Check browser console for details.', { id: loadingToast });
     }
   };
 
